@@ -5,7 +5,7 @@ interface Props {
 }
 
 export function NodeImage({ image, name, size = 48 }: Props) {
-  const src = image ? `/images/${image}` : '/images/placeholder.png'
+  const src = image ? `${import.meta.env.BASE_URL}images/${image}` : `${import.meta.env.BASE_URL}images/placeholder.png`
   return (
     <img
       src={src}
@@ -13,7 +13,7 @@ export function NodeImage({ image, name, size = 48 }: Props) {
       width={size}
       height={size}
       style={{ objectFit: 'contain', flexShrink: 0, borderRadius: 4 }}
-      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder.png' }}
+      onError={(e) => { (e.currentTarget as HTMLImageElement).src = `${import.meta.env.BASE_URL}images/placeholder.png` }}
     />
   )
 }

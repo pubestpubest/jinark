@@ -206,9 +206,9 @@ export function SimulationTab() {
                   transition: 'background 0.4s, border-color 0.4s',
                 }}>
                   <img
-                    src={`/images/${prize.image}`} alt={prize.name}
+                    src={`${import.meta.env.BASE_URL}images/${prize.image}`} alt={prize.name}
                     style={{ width: '58%', height: '58%', objectFit: 'contain' }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder.png' }}
+                    onError={e => { (e.currentTarget as HTMLImageElement).src = `${import.meta.env.BASE_URL}images/placeholder.png` }}
                   />
                   {prize.qty > 0 && (
                     <span style={{ fontSize: 11, color: 'var(--color-text-muted)', lineHeight: 1 }}>×{prize.qty}</span>
@@ -227,13 +227,13 @@ export function SimulationTab() {
                   cursor: tokens >= 50 ? 'pointer' : 'not-allowed',
                 }}
               >
-                <img className="cell-default" src="/images/cell.png" alt=""
+                <img className="cell-default" src={`${import.meta.env.BASE_URL}images/cell.png`} alt=""
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }}
-                  onError={e => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder.png' }}
+                  onError={e => { (e.currentTarget as HTMLImageElement).src = `${import.meta.env.BASE_URL}images/placeholder.png` }}
                 />
-                <img className="cell-hover" src="/images/hover-cell.png" alt=""
+                <img className="cell-hover" src={`${import.meta.env.BASE_URL}images/hover-cell.png`} alt=""
                   style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, pointerEvents: 'none' }}
-                  onError={e => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder.png' }}
+                  onError={e => { (e.currentTarget as HTMLImageElement).src = `${import.meta.env.BASE_URL}images/placeholder.png` }}
                 />
               </div>
             )
@@ -259,9 +259,9 @@ export function SimulationTab() {
                   background: done ? 'rgba(16,185,129,0.06)' : 'transparent',
                   opacity: done ? 0.7 : 1,
                 }}>
-                  <img src={`/images/${prize.image}`} alt={prize.name}
+                  <img src={`${import.meta.env.BASE_URL}images/${prize.image}`} alt={prize.name}
                     style={{ width: 44, height: 44, objectFit: 'contain', flexShrink: 0 }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder.png' }}
+                    onError={e => { (e.currentTarget as HTMLImageElement).src = `${import.meta.env.BASE_URL}images/placeholder.png` }}
                   />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 16, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -297,7 +297,7 @@ export function SimulationTab() {
                 }}>
                   <img src={`/images/${r.image}`} alt={r.name}
                     style={{ width: 34, height: 34, objectFit: 'contain' }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder.png' }}
+                    onError={e => { (e.currentTarget as HTMLImageElement).src = `${import.meta.env.BASE_URL}images/placeholder.png` }}
                   />
                   <span style={{ fontSize: 17, fontWeight: 700 }}>×{fmt(r.qty)}</span>
                   <span style={{ fontSize: 14, color: 'var(--color-text-muted)' }}>{r.name.replace('จินอาร์ค', '')}</span>

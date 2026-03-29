@@ -1,5 +1,5 @@
 function play(file: string, volume = 0.4) {
-  const audio = new Audio(`/sounds/${file}`)
+  const audio = new Audio(`${import.meta.env.BASE_URL}sounds/${file}`)
   audio.volume = volume
   audio.play().catch(() => {})
 }
