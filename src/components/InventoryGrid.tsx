@@ -97,7 +97,21 @@ export function InventoryGrid({ recipeChildren, progress, qty, altMap, onProgres
     const expectedCells   = netBoxes > 0 ? Math.ceil(netBoxes / boxesPerCell) : 0
     const expectedTokens  = expectedCells * BOARD.tokensPerCell
 
-    return { worstCaseBoxes, boxesHave, netBoxes, tracesTarget, tracesHave, incompleteBoxesHave, tracesEffective, netTraces, expectedCells, expectedTokens }
+    // Estimated hours: 1.5h session gives 1000 (best) / 500 (avg) / 300 (worst) tokens
+    const TOKENS_PER_SESSION = { best: 1000, avg: 500, worst: 300 }
+    const SESSION_HOURS = 1.5
+    function hoursNeeded(tokPerSession: number) {
+      if (expectedTokens === 0) return 0
+      const sessions = expectedTokens / tokPerSession
+      return sessions * SESSION_HOURS
+    }
+    const estHours = {
+      best:  hoursNeeded(TOKENS_PER_SESSION.best),
+      avg:   hoursNeeded(TOKENS_PER_SESSION.avg),
+      worst: hoursNeeded(TOKENS_PER_SESSION.worst),
+    }
+
+    return { worstCaseBoxes, boxesHave, netBoxes, tracesTarget, tracesHave, incompleteBoxesHave, tracesEffective, netTraces, expectedCells, expectedTokens, estHours }
   }, [colModes, recipeChildren, progress, qty])
 
   // ── Middle leaves ────────────────────────────────────────────────────────
@@ -236,6 +250,16 @@ export function InventoryGrid({ recipeChildren, progress, qty, altMap, onProgres
 
   function fmt(n: number) { return n.toLocaleString() }
 
+  function fmtHours(h: number) {
+    if (h === 0) return '—'
+    const totalMin = Math.round(h * 60)
+    const hrs = Math.floor(totalMin / 60)
+    const min = totalMin % 60
+    if (hrs === 0) return `${min} นาที`
+    if (min === 0) return `${hrs} ชม.`
+    return `${hrs} ชม. ${min} นาที`
+  }
+
   return (
     <div style={{ position: 'relative' }}>
       <h2 style={{
@@ -320,6 +344,23 @@ export function InventoryGrid({ recipeChildren, progress, qty, altMap, onProgres
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ color: 'var(--color-text-muted)' }}>เหรียญที่ต้องใช้</span>
             <span style={{ fontWeight: 700, color: 'var(--color-warning)' }}>~{fmt(req.expectedTokens)}</span>
+          </div>
+        </div>
+        <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 8, display: 'flex', flexDirection: 'column', gap: 5 }}>
+          <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginBottom: 2, letterSpacing: 0.5 }}>
+            ⏱ เวลาโดยประมาณ <span style={{ opacity: 0.6 }}>(1.5ชม. = 300 / 500 / 1,000 🪙)</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#f87171' }}>😢 แพ้ทุกรอบ</span>
+            <span style={{ fontWeight: 700, color: '#f87171' }}>~{fmtHours(req.estHours.worst)}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: 'var(--color-text-muted)' }}>😐 เฉลี่ย</span>
+            <span style={{ fontWeight: 700 }}>~{fmtHours(req.estHours.avg)}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#4ade80' }}>🏆 ชนะทุกรอบ</span>
+            <span style={{ fontWeight: 700, color: '#4ade80' }}>~{fmtHours(req.estHours.best)}</span>
           </div>
         </div>
         <div style={{
