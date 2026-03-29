@@ -97,12 +97,15 @@ export function InventoryGrid({ recipeChildren, progress, qty, altMap, onProgres
     const expectedCells   = netBoxes > 0 ? Math.ceil(netBoxes / boxesPerCell) : 0
     const expectedTokens  = expectedCells * BOARD.tokensPerCell
 
-    // Estimated hours: 1.5h session gives 1000 (best) / 500 (avg) / 300 (worst) tokens
-    const TOKENS_PER_SESSION = { best: 1000, avg: 500, worst: 300 }
+    // Estimated hours: 1.5h session gives 500 (best) / 350 (avg) / 200 (worst) tokens + 500 daily quest
+    const TOKENS_PER_SESSION = { best: 500, avg: 350, worst: 200 }
+    const DAILY_QUEST = 500
     const SESSION_HOURS = 1.5
+    const SESSIONS_PER_DAY = 24 / SESSION_HOURS  // theoretical max, used to convert daily quest to per-session bonus
     function hoursNeeded(tokPerSession: number) {
       if (expectedTokens === 0) return 0
-      const sessions = expectedTokens / tokPerSession
+      const tokPerSessionWithDaily = tokPerSession + DAILY_QUEST / SESSIONS_PER_DAY
+      const sessions = expectedTokens / tokPerSessionWithDaily
       return sessions * SESSION_HOURS
     }
     const estHours = {
@@ -348,7 +351,7 @@ export function InventoryGrid({ recipeChildren, progress, qty, altMap, onProgres
         </div>
         <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 8, display: 'flex', flexDirection: 'column', gap: 5 }}>
           <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginBottom: 2, letterSpacing: 0.5 }}>
-            ⏱ เวลาโดยประมาณ <span style={{ opacity: 0.6 }}>(1.5ชม. = 300 / 500 / 1,000 🪙)</span>
+            ⏱ เวลาโดยประมาณ <span style={{ opacity: 0.6 }}>(1.5ชม. = 200 / 350 / 500 🪙 + เควสรายวัน 500 🪙)</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ color: '#f87171' }}>😢 แพ้ทุกรอบ</span>
